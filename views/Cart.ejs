@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart | Perfume Shop</title>
+    <link rel="stylesheet" href="/css/styles1.css">
+</head>
+<body>
+
+    <%- include('./partials/Navbar') %>
+
+    <div class="container" style="margin-top: 50px; margin-bottom: 100px; min-height: 60vh;">
+        <h2 class="section-title">Your Selection</h2>
+
+        <% if (cartItems && cartItems.length > 0) { %>
+            
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% let finalTotal = 0; %>
+                    <% cartItems.forEach(item => { %>
+                        <% let lineTotal = item.price * item.quantity; %>
+                        <% finalTotal += lineTotal; %>
+                        <tr>
+                            <td class="product-col">
+                                <!-- Ensure your DB has image_url or use a placeholder -->
+                                <img src="<%= item.image_url %>" alt="<%= item.name %>">
+                                
+                                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                                    <span><%= item.name %></span>
+                                    
+                                    <!-- Optional: Small Remove Link -->
+                                    <form action="/cart/remove" method="POST" style="margin:0;">
+                                        <input type="hidden" name="product_id" value="<%= item.product_id %>">
+                                        <button type="submit" style="background:none; border:none; color:red; font-size:11px; cursor:pointer; text-decoration:underline; padding:0;">Remove</button>
+                                    </form>
+                                </div>
+                            </td>
+                            <td>$<%= item.price %></td>
+                            <td>
+                                <!-- Simple Quantity Display -->
+                                <span style="padding: 5px 10px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 4px;">
+                                    <%= item.quantity %>
+                                </span>
+                            </td>
+                            <td style="font-weight: bold;">$<%= lineTotal.toFixed(2) %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+
+            <!-- CART SUMMARY & ACTIONS -->
+            <div class="cart-summary">
+                <div style="margin-bottom: 20px;">
+                    <span style="font-size: 18px; color: #666;">Total: </span>
+                    <span style="font-size: 28px; font-weight: 700; color: #1a1a1a;">$<%= finalTotal.toFixed(2) %></span>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 15px;">
+                    <!-- CLEAR CART BUTTON -->
+                    <form action="/cart/clear" method="POST">
+                        <button type="submit" style="background: #eee; color: #333; padding: 14px 28px; border: none; border-radius: 50px; cursor: pointer; font-weight: 600;">
+                            Clear Cart
+                        </button>
+                    </form>
+
+                    <!-- CHECKOUT BUTTON -->
+                    <form action="/order/checkout" method="POST">
+                        <button type="submit" class="btn-primary">
+                            Checkout & Pay
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        <% } else { %>
+            <!-- EMPTY STATE -->
+            <div class="empty" style="text-align: center; padding: 50px;">
+                <p style="font-size: 18px; color: #888; margin-bottom: 20px;">Your cart is currently empty</p>
+                <a href="/" class="btn-primary">Browse Perfumes</a>
+            </div>
+        <% } %>
+    </div>
+
+    <%- include('./partials/Footer') %>
+
+</body>
+</html>

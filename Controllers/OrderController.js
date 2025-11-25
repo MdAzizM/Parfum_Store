@@ -1,32 +1,53 @@
 const db = require('../src/db/sqlite');
 
-// Create a new order
+// Add this function to your OrderController.js
+
 exports.createOrder = (req, res) => {
-  const { items } = req.body;
+  // 1. Get items from the CART table
+  const cartSql = `
+      SELECT cart.product_id, cart.quantity, products.price 
+      FROM cart 
+      JOIN products ON cart.product_id = products.id
+  `;
 
-  if (!items || items.length === 0) return res.status(400).json({ error: "No items provided" });
+  db.all(cartSql, [], (err, cartItems) => {
+    if (err) return res.status(500).send("Database error: " + err.message);
+    
+    if (!cartItems || cartItems.length === 0) {
+      return res.redirect('/cart'); 
+    }
 
-  let placeholders = items.map(() => '?').join(',');
-  let productIds = items.map(i => i.product_id);
-
-  db.all(`SELECT id, price FROM products WHERE id IN (${placeholders})`, productIds, (err, products) => {
-    if (err) return res.status(500).json({ error: err.message });
-
+    // 2. Calculate Total
     let total = 0;
-    items.forEach(item => {
-      const product = products.find(p => p.id === item.product_id);
-      if (product) total += product.price * item.quantity;
+    cartItems.forEach(item => {
+      total += item.price * item.quantity;
     });
 
-    db.run("INSERT INTO orders (order_date, total) VALUES (?, ?)", [new Date().toISOString(), total], function(err) {
-      if (err) return res.status(500).json({ error: err.message });
-      const orderId = this.lastID;
+    // 3. Save to Orders
+    db.serialize(() => {
+      // FIX: Changed 'order_date' to 'created_at' to match your database
+      const insertOrderSql = "INSERT INTO orders (created_at, total) VALUES (?, ?)";
+      
+      db.run(insertOrderSql, [new Date().toISOString(), total], function(err) {
+        if (err) return res.status(500).send("Order Insert Error: " + err.message);
+        
+        const newOrderId = this.lastID;
 
-      const stmt = db.prepare("INSERT INTO order_items (order_id, product_id, quantity) VALUES (?, ?, ?)");
-      items.forEach(item => stmt.run(orderId, item.product_id, item.quantity));
-      stmt.finalize();
+        // 4. Save Order Items
+        const stmt = db.prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
+        
+        cartItems.forEach(item => {
+          stmt.run(newOrderId, item.product_id, item.quantity, item.price);
+        });
+        stmt.finalize();
 
-      res.json({ message: "Order placed", order_id: orderId, total });
+        // 5. Empty the Cart
+        db.run("DELETE FROM cart", [], (delErr) => {
+            if (delErr) console.error(delErr);
+            // Redirect to Home with success message
+            res.redirect('/?message=OrderSuccess');
+        });
+      });
     });
   });
 };

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfume Shop</title>
+    <link rel="stylesheet" href="/css/styles1.css">
+</head>
+<body>
+
+    <%- include('./partials/Navbar') %>
+
+    <header class="main-banner">
+        <div class="banner-content">
+            <h1>PERFUME X</h1>
+            <p>The Essence of Timeless Elegance</p>
+            <a href="#about" class="btn-banner">Discover More</a>
+        </div>
+    </header>
+
+    <section class="container hero">
+        <% if (typeof products !== 'undefined' && products.length > 0) { %>
+            <% products.slice(0, 2).forEach(p => { %>
+                <div class="hero-card">
+                    <img src="<%= p.image_url %>" alt="<%= p.name %>">
+                    <h2><%= p.name %></h2>
+                    <p><%= p.description %></p>
+                    <button class="btn-primary" onclick="addToCart('<%= p.id %>', this)">Add to Cart</button>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No products available.</p>
+        <% } %>
+    </section>
+
+    <section id="about" class="about">
+        <h2>About Our Company</h2>
+        <p>
+            PerfumeX is a luxury fragrance house dedicated to elegance, purity
+            and timeless scents. Each fragrance is crafted with passion, using
+            the finest blends of aromatic notes from around the world.
+        </p>
+    </section>
+
+    <section class="products">
+        <h2 class="section-title">More Products</h2>
+
+        <div class="container products-grid">
+            <% if (typeof products !== 'undefined' && products.length > 2) { %>
+                <% products.slice(2).forEach(p => { %>
+                    <div class="product-card">
+                        <img src="<%= p.image_url %>" alt="<%= p.name %>">
+                        <h3><%= p.name %></h3>
+                        <p><%= p.description %></p>
+                        <button class="btn-primary" onclick="addToCart('<%= p.id %>', this)">
+                            Add to Cart
+                        </button>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+    </section>
+
+    
+    <%- include('./partials/Footer') %>
+
+    <%- include('./partials/Notification') %>
+
+
+    <script src="/js/storefront.js"></script>
+
+</body>
+</html>

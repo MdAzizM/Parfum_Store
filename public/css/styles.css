@@ -1,0 +1,237 @@
+/* ===== GENERAL ===== */
+html {
+    /* 1. Makes the jump smooth instead of instant */
+    scroll-behavior: smooth;
+    
+    /* 2. Tells the browser to stop scrolling X pixels BEFORE the section */
+    /* This should be slightly larger than your navbar height */
+    scroll-padding-top: 100px;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    background: #D391B0;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* ===== NAVBAR ===== */
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: white;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    color:#0C0420;
+}
+
+.navbar-container h1 {
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.navbar-container a {
+    color:#0C0420;
+    margin-left: 25px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.navbar-container a:hover {
+    color: #000;
+}
+
+/* ===== HERO – MAIN TWO PRODUCTS ===== */
+.hero {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.hero-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hero-card img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+.hero-card h2 {
+    margin: 15px 0 5px;
+    font-size: 22px;
+}
+
+.hero-card p {
+    font-size: 14px;
+    color: #666;
+}
+
+.btn-primary {
+    margin-top: 15px;
+    padding: 12px;
+    background: #d7b4ff; /* soft perfume color */
+    border: none;
+    color: #222;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-primary:hover {
+    background: #c799ff;
+}
+
+/* ===== ABOUT SECTION ===== */
+.about {
+    margin-top: 80px;
+    padding: 70px 0;
+    background: #eeeeee;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.about p {
+    width: 70%;
+    margin: auto;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #555;
+}
+
+/* ===== LAST PRODUCTS SECTION ===== */
+.products {
+    padding: 70px 0;
+    background: #D391B0;
+}
+
+.section-title {
+    font-size: 26px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: white;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 25px;
+}
+
+.product-card {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.product-card img {
+    width: 90%;
+    border-radius: 10px;
+}
+
+.product-card h3 {
+    margin: 12px 0 5px;
+}
+
+.product-card p {
+    font-size: 14px;
+    color: #666;
+}
+
+/* ===== CART ===== */
+/* =============================
+   CART PAGE STYLES
+   ============================= */
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.cart-table th {
+    text-align: left;
+    padding: 20px;
+    background: #fdfdfd;
+    border-bottom: 2px solid #f0f0f0;
+    font-size: 13px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cart-table td {
+    padding: 20px;
+    border-bottom: 1px solid #f9f9f9;
+    vertical-align: middle;
+}
+
+.product-col {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.product-col img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain; /* Ensures bottle shape is preserved */
+    border-radius: 8px;
+    border: 1px solid #eee;
+    padding: 5px;
+    background: #fff;
+}
+
+.cart-summary {
+    text-align: right;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+.empty{
+    border-radius: 40px;
+    background-color: white;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: auto;
+    color: #0C0420;
+    font-size: 14px;
+    background: #fafafa;
+
+}

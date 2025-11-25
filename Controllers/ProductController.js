@@ -1,12 +1,12 @@
 const db = require('../src/db/sqlite');
 
-const getAllProducts = (req, res) => {
+const getAllProducts =async (req, res) => {
     const sql = "SELECT * FROM products";
     db.all(sql, [], (err, rows) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
-        res.json(rows);
+        res.render("Home", { products: rows });
     });
 }
 
